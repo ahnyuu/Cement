@@ -1,6 +1,5 @@
 """
-Walk-forward (rolling-origin, 1-step-ahead) backtest for the Chronos-2 quality net, evaluated the
-same way as the 1st-year ANN so results are directly comparable:
+Walk-forward (rolling-origin, 1-step-ahead) backtest for the Chronos-2 quality net:
   - MAE / RMSE / R2 in real units
   - spec-in/out Confusion-Matrix accuracy (blaine 3700-3900, residue 7-9)
   - normalized skill score vs. the naive "repeat last reading" baseline (primary metric)
@@ -10,10 +9,11 @@ At each evaluated timestamp t the model sees only history strictly before t (cap
 fine-tuned at prediction_length=4 are still evaluated 1-step here -- chronos-2 handles inference
 at a shorter horizon than training fine, so this stays comparable across runs.
 
-blaine/residue are only measured ~every 4h. --fresh-reading-only (default) restricts evaluation
-to rows where the target actually changes from the previous timestep, i.e. a new lab reading just
-came in -- the only rows where "predict the target" is non-trivial (a naive repeat-last baseline
-scores perfectly on the forward-filled rows in between).
+blaine/residue targets must contain actual measurements only, with unmeasured hours left NaN.
+Equal consecutive measurements are valid labels. Default split is validation for parameter
+selection; --split test explicitly evaluates the historical, already-inspected test period.
+A fixed eligibility history (default 24 hourly rows) defines the same evaluation points for
+every context length >=24. Excluded points are recorded, not silently lost.
 
 Usage:
     python eval/backtest.py --target blaine  --checkpoint checkpoints/blaine_ctx1024/final --tag ctx1024
@@ -23,17 +23,19 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import sys
+import time
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from sklearn.metrics import confusion_matrix, mean_absolute_error, mean_squared_error, r2_score
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import config as cfg
-from data.dataset_utils import chronological_split, load_processed
-from eval.metrics_utils import macro_average_mae, normalized_skill_score
+from eval.batch_inference import predict_tasks, compare_records
+from data.dataset_utils import PROCESSED_PATH, chronological_split, load_processed
+from data.research_protocol import PROTOCOL_VERSION, file_sha256, runtime_versions, validate_hourly_frame
 
 
 def make_eval_tasks(
@@ -44,27 +46,42 @@ def make_eval_tasks(
     context_length: int,
     fresh_reading_only: bool = True,
     include_prev: bool = True,
+    target: str | None = None,
+    eligibility_context_length: int = 24,
+    audit_rows: list | None = None,
 ):
     """One rolling-origin forecast task per evaluated row: (context_df, future_df, actual, ts).
     Context is capped to the last `context_length` rows strictly before the forecast timestamp."""
     g = df[df["item_id"] == item_id].reset_index(drop=True)
-    target = g.columns[-1]
+    target = target or g.columns[-1]
+    if stride < 1 or eligibility_context_length < 1 or context_length < eligibility_context_length:
+        raise ValueError("stride must be positive; context must be >= fixed eligibility context.")
+    if not 0 <= test_start_idx <= len(g):
+        raise ValueError("Evaluation start is outside the series.")
 
     if fresh_reading_only:
-        is_fresh = g[target].ne(g[target].shift(1)) & g[target].notna()
-        candidate_idx = [i for i in range(test_start_idx, len(g)) if is_fresh.iloc[i]]
+        # Actual-measurement CSV: observation is independent of a change in numeric value.
+        observed = np.isfinite(g[target].to_numpy(dtype=float))
+        candidate_idx = [i for i in range(test_start_idx, len(g)) if observed[i]]
     else:
         candidate_idx = list(range(test_start_idx, len(g)))
 
     tasks = []
+    audit_rows = audit_rows if audit_rows is not None else []
     for i in candidate_idx[::stride]:
+        audit = {"item_id": item_id, "timestamp": g.timestamp.iloc[i],
+                 "actual": g[target].iloc[i], "status": "evaluated"}
+        audit_rows.append(audit)
+        if not np.isfinite(g[target].iloc[i]):
+            audit["status"] = "no_measured_target"
+            continue
+        eligibility_history = g[target].iloc[max(0, i - eligibility_context_length):i]
+        if not np.isfinite(eligibility_history.to_numpy(dtype=float)).any():
+            audit["status"] = "no_target_in_fixed_eligibility_history"
+            continue
         ctx_start = max(0, i - context_length)
         context_df = g.iloc[ctx_start:i]
-        if context_df[target].dropna().empty:
-            continue
         future_row = g.iloc[[i]]
-        if pd.isna(future_row[target].iloc[0]):
-            continue
         future_cols = cfg.CONTROL_COLS + (cfg.PREV_QUALITY_COLS if include_prev else [])
         future_df = future_row[["item_id", "timestamp"] + future_cols]
         tasks.append(
@@ -82,11 +99,21 @@ def main() -> None:
     parser.add_argument("--target", choices=cfg.TARGET_COLS, required=True)
     parser.add_argument("--checkpoint", default="amazon/chronos-2", help="local fine-tuned path or HF model id")
     parser.add_argument("--context-length", type=int, default=512)
+    parser.add_argument("--split", choices=["validation", "test"], default="validation")
+    parser.add_argument("--eligibility-context-length", type=int, default=24,
+                        help="Fixed history used to choose common points; must be <= every compared context.")
     parser.add_argument("--stride", type=int, default=4, help="evaluate every Nth eligible row")
     parser.add_argument("--device-map", default=cfg.default_device_map())
+    parser.add_argument("--inference-window-batch-size", type=int, default=1,
+                        help="Independent forecast windows per predict_df call. Use 8 to enable batching; 1 preserves serial execution.")
+    parser.add_argument("--inference-batch-size", type=int, default=64,
+                        help="Chronos inference channel budget (targets AND covariates); independent of training batch size.")
+    parser.add_argument("--verify-batch-windows", type=int, default=8,
+                        help="Compare the first N windows with serial inference before batched evaluation; 0 disables.")
     parser.add_argument("--all-hours", action="store_true",
-                        help="evaluate every hourly row instead of only fresh-reading transitions "
-                        "(inflates accuracy trivially -- off by default)")
+                        help="Apply stride to hourly rows instead of measured rows; missing labels are never scored.")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Validate tasks and coverage without loading a model or writing outputs.")
     parser.add_argument("--tag", default="",
                         help="suffix for the output csv, e.g. --tag zeroshot -> "
                         "backtest_{target}_zeroshot.csv")
@@ -94,48 +121,89 @@ def main() -> None:
                         help="drop blaine_prev/residue_prev (match a --no-prev checkpoint; "
                         "experiments/prev/ A/B)")
     args = parser.parse_args()
+    if args.stride < 1 or args.eligibility_context_length < 1 or args.context_length < args.eligibility_context_length:
+        parser.error("Positive stride required; context-length must be >= eligibility-context-length.")
+    if any(c not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-" for c in args.tag):
+        parser.error("tag must contain only letters, digits, underscores and hyphens.")
+
+    if args.inference_window_batch_size < 1 or args.inference_batch_size < 1 or args.verify_batch_windows < 0:
+        parser.error("Inference batch sizes must be positive; verify-batch-windows must be nonnegative.")
 
     include_prev = not args.no_prev
     df = load_processed(args.target, include_prev=include_prev)
-    _train_df, _val_df, test_df = chronological_split(df)
-
-    pipeline = cfg.load_chronos_pipeline(args.checkpoint, device_map=args.device_map)
+    validate_hourly_frame(df)
+    train_df, val_df, test_df = chronological_split(df)
+    if args.split == "validation":
+        evaluation_df = val_df
+        # Do not pass test rows to task creation when choosing hyperparameters.
+        df = pd.concat([train_df, val_df], ignore_index=True).sort_values(["item_id", "timestamp"])
+    else:
+        evaluation_df = test_df
+        print("Historical test period: prior experiments already used it for selection; not an untouched holdout.")
     lo, hi = cfg.SPEC_RANGES[args.target]
 
-    records = []
+    suffix = f"_{args.tag}" if args.tag else ""
+    out_dir = Path(__file__).resolve().parent / PROTOCOL_VERSION / args.split
+    out_path = out_dir / f"backtest_{args.target}{suffix}.csv"
+    if not args.dry_run and any(out_path.with_suffix(suffix).exists() for suffix in (".csv", ".json", ".coverage.csv")):
+        raise FileExistsError(f"Existing evaluation output: {out_path}. Use a new --tag.")
+
+    audit_rows, task_groups = [], []
     for item_id in df["item_id"].unique():
-        test_start_idx = len(df[df["item_id"] == item_id]) - len(test_df[test_df["item_id"] == item_id])
+        start = len(df[df.item_id == item_id]) - len(evaluation_df[evaluation_df.item_id == item_id])
         tasks = make_eval_tasks(
-            df, item_id, test_start_idx, args.stride, args.context_length,
-            fresh_reading_only=not args.all_hours, include_prev=include_prev,
+            df, item_id, start, args.stride, args.context_length,
+            fresh_reading_only=not args.all_hours, include_prev=include_prev, target=args.target,
+            eligibility_context_length=args.eligibility_context_length, audit_rows=audit_rows,
         )
-        print(f"{item_id}: {len(tasks)} eval points")
-        for context_df, future_df, actual, ts in tasks:
-            pred = pipeline.predict_df(
-                df=context_df,
-                future_df=future_df,
-                id_column="item_id",
-                timestamp_column="timestamp",
-                target=args.target,
-                prediction_length=1,
-                quantile_levels=[0.1, 0.5, 0.9],
-            )
-            row = pred.iloc[0]
-            naive_pred = context_df[args.target].dropna().iloc[-1]
-            records.append({
-                "item_id": item_id,
-                "timestamp": ts,
-                "actual": actual,
-                "naive_pred": naive_pred,
-                "pred": float(row["predictions"]),
-                "pred_q10": float(row["0.1"]),
-                "pred_q90": float(row["0.9"]),
-            })
+        task_groups.append(tasks)
+        print(f"{item_id}: {len(tasks)} eval points ({args.split})")
+    audit = pd.DataFrame(audit_rows)
+    if not any(task_groups):
+        raise ValueError("No evaluation points with a measured target and eligible history.")
+    print(audit.groupby(["item_id", "status"]).size().to_string())
+    if args.dry_run:
+        print("DRY RUN PASSED: no model loaded and no predictions generated.")
+        return
+
+    from sklearn.metrics import confusion_matrix, mean_absolute_error, mean_squared_error, r2_score
+    from eval.metrics_utils import macro_average_mae, normalized_skill_score
+
+    pipeline = cfg.load_chronos_pipeline(args.checkpoint, device_map=args.device_map)
+    tasks = [task for group in task_groups for task in group]
+    inference_kwargs = dict(target=args.target, context_length=args.context_length,
+                            inference_batch_size=args.inference_batch_size)
+    verification = {"status": "not_requested"}
+    if args.inference_window_batch_size > 1 and args.verify_batch_windows:
+        sample = tasks[:args.verify_batch_windows]
+        serial = predict_tasks(pipeline, sample, window_batch_size=1, **inference_kwargs)
+        batched = predict_tasks(pipeline, sample, window_batch_size=args.inference_window_batch_size,
+                                **inference_kwargs)
+        verification = compare_records(serial, batched)
+        print(f"Serial/batched sample check: {verification}")
+    started = time.perf_counter()
+    records = predict_tasks(pipeline, tasks, window_batch_size=args.inference_window_batch_size,
+                            **inference_kwargs)
+    inference_seconds = time.perf_counter() - started
 
     result = pd.DataFrame(records)
-    suffix = f"_{args.tag}" if args.tag else ""
-    out_path = Path(__file__).resolve().parent / f"backtest_{args.target}{suffix}.csv"
+    out_dir.mkdir(parents=True, exist_ok=True)
     result.to_csv(out_path, index=False)
+    audit.to_csv(out_path.with_suffix(".coverage.csv"), index=False)
+    metadata = {
+        "protocol": PROTOCOL_VERSION, "arguments": vars(args), "n": len(result),
+        "processed_csv": str(PROCESSED_PATH.resolve()), "data_sha256": file_sha256(PROCESSED_PATH),
+        "versions": runtime_versions(), "prediction_length": 1,
+        "inference_seconds": inference_seconds,
+        "inference_windows_per_second": len(result) / inference_seconds,
+        "batch_verification": verification,
+        "mae": float(np.abs(result.actual - result.pred).mean()),
+        "naive_mae": float(np.abs(result.actual - result.naive_pred).mean()),
+        "excluded_points": int((audit.status != "evaluated").sum()),
+        "evaluation_start": str(result.timestamp.min()), "evaluation_end": str(result.timestamp.max()),
+        "test_status": "historical test already inspected; not an untouched holdout",
+    }
+    out_path.with_suffix(".json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     print(f"Saved backtest results -> {out_path}")
 
     def report(pred_col: str, label: str) -> None:
@@ -155,7 +223,7 @@ def main() -> None:
     macro = macro_average_mae(result)
 
     print(f"\n=== {args.target} backtest ({args.checkpoint}) ===")
-    print(f"n = {len(result)}  (fresh-reading transitions only: {not args.all_hours})")
+    print(f"n = {len(result)}  (split={args.split}, measured-row stride={not args.all_hours})")
     report("naive_pred", "Naive baseline (repeat last observed reading)")
     report("pred", "Chronos-2")
     print(f"\nnormalized skill score (per-station model_MAE / naive_MAE, macro-avg) = {skill:.4f}  "
