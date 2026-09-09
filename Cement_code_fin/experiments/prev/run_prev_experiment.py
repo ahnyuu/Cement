@@ -1,4 +1,7 @@
 """
+REVISED 2026-09-09: validation-only study; outputs under review_v2.
+The original study description below is retained as historical context.
+
 prev-quality covariate A/B: with prev (sparse, current canonical) vs without prev.
 
 Reproduces the old folder's 2026-08-12 no-prev vs prev comparison on the measured-actual data,
@@ -29,8 +32,11 @@ from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from data.research_protocol import checkpoint_complete, evaluation_complete
+
 PY = sys.executable
-LOG = ROOT / "experiments" / "prev" / "prev_experiment.log"
+LOG = ROOT / "experiments" / "prev" / "prev_experiment_review_v2.log"
 
 CTX = {"blaine": 512, "residue": 256}
 ARMS = {"prev": [], "noprev": ["--no-prev"]}
@@ -60,12 +66,13 @@ def run(cmd: list[str], phase: str) -> None:
 
 
 def main() -> None:
+    print("review_v2: parameter selection uses VALIDATION; historical outputs are not reused.")
     log(f"=== prev A/B start (ctx={CTX}, full/predlen4/1000steps/lr1e-6/batch64) ===")
     for target, ctx in CTX.items():
         for arm, extra in ARMS.items():
             tag = f"ctx{ctx}_{arm}"
-            ckpt = ROOT / "checkpoints" / f"{target}_{tag}" / "final"
-            if (ckpt / "config.json").exists():
+            ckpt = ROOT / "checkpoints" / "review_v2" / f"{target}_{tag}" / "final"
+            if checkpoint_complete(ckpt):
                 log(f"SKIP  finetune {target} {arm} (checkpoint exists)")
             else:
                 run([PY, "train/finetune_chronos2.py", "--target", target,
@@ -75,11 +82,11 @@ def main() -> None:
                      "--output-tag", tag, *extra],
                     f"finetune {target} {arm} ctx{ctx}")
 
-            csv = ROOT / "eval" / f"backtest_{target}_{tag}.csv"
-            if csv.exists():
+            csv = ROOT / "eval" / "review_v2" / "validation" / f"backtest_{target}_{tag}.csv"
+            if evaluation_complete(csv):
                 log(f"SKIP  backtest {target} {arm} (csv exists)")
             else:
-                run([PY, "eval/backtest.py", "--target", target, "--checkpoint", str(ckpt),
+                run([PY, "eval/backtest.py", "--split", "validation", "--target", target, "--checkpoint", str(ckpt),
                      "--context-length", str(ctx), "--stride", "4", "--tag", tag, *extra],
                     f"backtest {target} {arm}")
     log("=== prev A/B complete ===")
