@@ -1,0 +1,22 @@
+Loading weights:   0%|          | 0/170 [00:00<?, ?it/s]Loading weights:  15%|#4        | 25/170 [00:00<00:00, 249.44it/s]Loading weights:  30%|###       | 51/170 [00:00<00:00, 251.28it/s]Loading weights:  45%|####5     | 77/170 [00:00<00:00, 245.69it/s]Loading weights:  61%|######    | 103/170 [00:00<00:00, 247.87it/s]Loading weights:  76%|#######5  | 129/170 [00:00<00:00, 246.33it/s]Loading weights:  91%|######### | 154/170 [00:00<00:00, 246.77it/s]Loading weights: 100%|##########| 170/170 [00:00<00:00, 251.84it/s]
+2CM: 297 eval points
+3CM: 266 eval points
+4CM: 289 eval points
+Saved backtest results -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code\chronos_quality\eval\backtest_blaine_predlen4_ctx1024_full_measured.csv
+
+=== blaine backtest (checkpoints/blaine_predlen4_ctx1024_full_measured/final) ===
+n = 852  (fresh-reading transitions only: True)
+
+--- Naive baseline (repeat last observed reading) ---
+MAE=83.76  RMSE=118.82  R2=0.1625  spec-in/out accuracy=67.02%
+            Pred IN  Pred OUT
+Actual IN       265       139
+Actual OUT      142       306
+
+--- Chronos-2 ---
+MAE=69.47  RMSE=93.74  R2=0.4788  spec-in/out accuracy=71.01%
+            Pred IN  Pred OUT
+Actual IN       275       129
+Actual OUT      118       330
+
+80% interval (q0.1-q0.9) empirical coverage = 66.08% (target: 80%)

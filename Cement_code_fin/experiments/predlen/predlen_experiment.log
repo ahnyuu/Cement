@@ -1,0 +1,194 @@
+[2026-09-07 22:39:36] === predlen A/B start (ctx={'blaine': 512, 'residue': 256}, predlens=[4, 1], full/1000steps/lr1e-6/batch64) ===
+[2026-09-07 22:39:36] START finetune blaine predlen4 ctx512
+  cmd: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target blaine --finetune-mode full --prediction-length 4 --context-length 512 --learning-rate 1e-6 --num-steps 1000 --batch-size 64 --output-tag ctx512_predlen4
+----- stdout tail -----
+{'eval_loss': '0.005201', 'eval_runtime': '0.0713', 'eval_samples_per_second': '1768', 'eval_steps_per_second': '28.06', 'epoch': '0.3'}
+{'loss': '0.008157', 'grad_norm': '0.6749', 'learning_rate': '6.01e-07', 'epoch': '0.4'}
+{'eval_loss': '0.005724', 'eval_runtime': '0.0704', 'eval_samples_per_second': '1791', 'eval_steps_per_second': '28.43', 'epoch': '0.4'}
+{'loss': '0.008022', 'grad_norm': '0.6458', 'learning_rate': '5.01e-07', 'epoch': '0.5'}
+{'eval_loss': '0.005814', 'eval_runtime': '0.069', 'eval_samples_per_second': '1826', 'eval_steps_per_second': '28.98', 'epoch': '0.5'}
+{'loss': '0.008678', 'grad_norm': '0.34', 'learning_rate': '4.01e-07', 'epoch': '0.6'}
+{'eval_loss': '0.005686', 'eval_runtime': '0.0763', 'eval_samples_per_second': '1652', 'eval_steps_per_second': '26.23', 'epoch': '0.6'}
+{'loss': '0.007722', 'grad_norm': '0.7999', 'learning_rate': '3.01e-07', 'epoch': '0.7'}
+{'eval_loss': '0.005548', 'eval_runtime': '0.0712', 'eval_samples_per_second': '1771', 'eval_steps_per_second': '28.11', 'epoch': '0.7'}
+{'loss': '0.007668', 'grad_norm': '0.2863', 'learning_rate': '2.01e-07', 'epoch': '0.8'}
+{'eval_loss': '0.005446', 'eval_runtime': '0.0685', 'eval_samples_per_second': '1839', 'eval_steps_per_second': '29.19', 'epoch': '0.8'}
+{'loss': '0.007225', 'grad_norm': '0.4148', 'learning_rate': '1.01e-07', 'epoch': '0.9'}
+{'eval_loss': '0.005477', 'eval_runtime': '0.0722', 'eval_samples_per_second': '1746', 'eval_steps_per_second': '27.71', 'epoch': '0.9'}
+{'loss': '0.007883', 'grad_norm': '0.6132', 'learning_rate': '1e-09', 'epoch': '1'}
+{'eval_loss': '0.005525', 'eval_runtime': '0.0704', 'eval_samples_per_second': '1789', 'eval_steps_per_second': '28.4', 'epoch': '1'}
+{'train_runtime': '148.4', 'train_samples_per_second': '431.1', 'train_steps_per_second': '6.737', 'train_loss': '0.007637', 'epoch': '1'}
+Saved fine-tuned blaine quality net -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx512_predlen4\final
+Saved loss history (10 val points) -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx512_predlen4\loss_history.csv
+  val_loss: min=0.00475 (step 100), final=0.00552 (step 1000), final-min=+0.00078 <-- val loss rose from its min: overfitting
+Saved loss curve -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx512_predlen4\loss_history.png
+[2026-09-07 22:42:13] DONE  finetune blaine predlen4 ctx512 (2.6 min)
+[2026-09-07 22:42:13] START backtest blaine predlen4
+  cmd: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target blaine --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx512_predlen4\final --context-length 512 --stride 4 --tag ctx512_predlen4
+----- stdout tail -----
+Saved backtest results -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\eval\backtest_blaine_ctx512_predlen4.csv
+
+=== blaine backtest (C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx512_predlen4\final) ===
+n = 851  (fresh-reading transitions only: True)
+
+--- Naive baseline (repeat last observed reading) ---
+MAE=83.767  RMSE=118.862  R2=0.1629  spec-in/out accuracy=66.98%
+            Pred IN  Pred OUT
+Actual IN       265       139
+Actual OUT      142       305
+
+--- Chronos-2 ---
+MAE=69.635  RMSE=94.250  R2=0.4737  spec-in/out accuracy=70.15%
+            Pred IN  Pred OUT
+Actual IN       272       132
+Actual OUT      122       325
+
+normalized skill score (per-station model_MAE / naive_MAE, macro-avg) = 0.8319  (beats naive)
+macro-average MAE (equal per station) = 69.5736
+80% interval (q0.1-q0.9) empirical coverage = 66.16% (target: 80%)
+[2026-09-07 22:43:04] DONE  backtest blaine predlen4 (0.9 min)
+[2026-09-07 22:43:04] START finetune blaine predlen1 ctx512
+  cmd: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target blaine --finetune-mode full --prediction-length 1 --context-length 512 --learning-rate 1e-6 --num-steps 1000 --batch-size 64 --output-tag ctx512_predlen1
+----- stdout tail -----
+{'eval_loss': '0', 'eval_runtime': '0.0706', 'eval_samples_per_second': '1784', 'eval_steps_per_second': '28.31', 'epoch': '0.3'}
+{'loss': '0.001854', 'grad_norm': '0.4584', 'learning_rate': '6.01e-07', 'epoch': '0.4'}
+{'eval_loss': '0', 'eval_runtime': '0.0684', 'eval_samples_per_second': '1843', 'eval_steps_per_second': '29.26', 'epoch': '0.4'}
+{'loss': '0.002513', 'grad_norm': '0.6219', 'learning_rate': '5.01e-07', 'epoch': '0.5'}
+{'eval_loss': '0', 'eval_runtime': '0.0713', 'eval_samples_per_second': '1767', 'eval_steps_per_second': '28.05', 'epoch': '0.5'}
+{'loss': '0.00172', 'grad_norm': '0', 'learning_rate': '4.01e-07', 'epoch': '0.6'}
+{'eval_loss': '0', 'eval_runtime': '0.0705', 'eval_samples_per_second': '1786', 'eval_steps_per_second': '28.35', 'epoch': '0.6'}
+{'loss': '0.003016', 'grad_norm': '0', 'learning_rate': '3.01e-07', 'epoch': '0.7'}
+{'eval_loss': '0', 'eval_runtime': '0.0685', 'eval_samples_per_second': '1840', 'eval_steps_per_second': '29.21', 'epoch': '0.7'}
+{'loss': '0.002812', 'grad_norm': '0.2993', 'learning_rate': '2.01e-07', 'epoch': '0.8'}
+{'eval_loss': '0', 'eval_runtime': '0.0726', 'eval_samples_per_second': '1736', 'eval_steps_per_second': '27.55', 'epoch': '0.8'}
+{'loss': '0.001813', 'grad_norm': '0.1376', 'learning_rate': '1.01e-07', 'epoch': '0.9'}
+{'eval_loss': '0', 'eval_runtime': '0.0714', 'eval_samples_per_second': '1764', 'eval_steps_per_second': '27.99', 'epoch': '0.9'}
+{'loss': '0.00196', 'grad_norm': '0', 'learning_rate': '1e-09', 'epoch': '1'}
+{'eval_loss': '0', 'eval_runtime': '0.0705', 'eval_samples_per_second': '1788', 'eval_steps_per_second': '28.38', 'epoch': '1'}
+{'train_runtime': '146.2', 'train_samples_per_second': '437.7', 'train_steps_per_second': '6.838', 'train_loss': '0.002064', 'epoch': '1'}
+Saved fine-tuned blaine quality net -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx512_predlen1\final
+Saved loss history (10 val points) -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx512_predlen1\loss_history.csv
+  val_loss: min=0.00000 (step 100), final=0.00000 (step 1000), final-min=+0.00000
+Saved loss curve -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx512_predlen1\loss_history.png
+[2026-09-07 22:45:38] DONE  finetune blaine predlen1 ctx512 (2.6 min)
+[2026-09-07 22:45:38] START backtest blaine predlen1
+  cmd: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target blaine --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx512_predlen1\final --context-length 512 --stride 4 --tag ctx512_predlen1
+----- stdout tail -----
+Saved backtest results -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\eval\backtest_blaine_ctx512_predlen1.csv
+
+=== blaine backtest (C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx512_predlen1\final) ===
+n = 851  (fresh-reading transitions only: True)
+
+--- Naive baseline (repeat last observed reading) ---
+MAE=83.767  RMSE=118.862  R2=0.1629  spec-in/out accuracy=66.98%
+            Pred IN  Pred OUT
+Actual IN       265       139
+Actual OUT      142       305
+
+--- Chronos-2 ---
+MAE=71.052  RMSE=96.221  R2=0.4514  spec-in/out accuracy=69.57%
+            Pred IN  Pred OUT
+Actual IN       251       153
+Actual OUT      106       341
+
+normalized skill score (per-station model_MAE / naive_MAE, macro-avg) = 0.8491  (beats naive)
+macro-average MAE (equal per station) = 70.9951
+80% interval (q0.1-q0.9) empirical coverage = 67.22% (target: 80%)
+[2026-09-07 22:46:29] DONE  backtest blaine predlen1 (0.9 min)
+[2026-09-07 22:46:29] START finetune residue predlen4 ctx256
+  cmd: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target residue --finetune-mode full --prediction-length 4 --context-length 256 --learning-rate 1e-6 --num-steps 1000 --batch-size 64 --output-tag ctx256_predlen4
+----- stdout tail -----
+{'eval_loss': '0.01562', 'eval_runtime': '0.0438', 'eval_samples_per_second': '2878', 'eval_steps_per_second': '45.69', 'epoch': '0.3'}
+{'loss': '0.007838', 'grad_norm': '0.6863', 'learning_rate': '6.01e-07', 'epoch': '0.4'}
+{'eval_loss': '0.01538', 'eval_runtime': '0.052', 'eval_samples_per_second': '2424', 'eval_steps_per_second': '38.48', 'epoch': '0.4'}
+{'loss': '0.009653', 'grad_norm': '1.052', 'learning_rate': '5.01e-07', 'epoch': '0.5'}
+{'eval_loss': '0.01541', 'eval_runtime': '0.0486', 'eval_samples_per_second': '2591', 'eval_steps_per_second': '41.12', 'epoch': '0.5'}
+{'loss': '0.009342', 'grad_norm': '0.7352', 'learning_rate': '4.01e-07', 'epoch': '0.6'}
+{'eval_loss': '0.01582', 'eval_runtime': '0.045', 'eval_samples_per_second': '2800', 'eval_steps_per_second': '44.45', 'epoch': '0.6'}
+{'loss': '0.008686', 'grad_norm': '1.409', 'learning_rate': '3.01e-07', 'epoch': '0.7'}
+{'eval_loss': '0.01525', 'eval_runtime': '0.0581', 'eval_samples_per_second': '2168', 'eval_steps_per_second': '34.41', 'epoch': '0.7'}
+{'loss': '0.00788', 'grad_norm': '1.137', 'learning_rate': '2.01e-07', 'epoch': '0.8'}
+{'eval_loss': '0.01588', 'eval_runtime': '0.0498', 'eval_samples_per_second': '2529', 'eval_steps_per_second': '40.14', 'epoch': '0.8'}
+{'loss': '0.009111', 'grad_norm': '0.5357', 'learning_rate': '1.01e-07', 'epoch': '0.9'}
+{'eval_loss': '0.01577', 'eval_runtime': '0.0488', 'eval_samples_per_second': '2583', 'eval_steps_per_second': '40.99', 'epoch': '0.9'}
+{'loss': '0.008186', 'grad_norm': '0.4359', 'learning_rate': '1e-09', 'epoch': '1'}
+{'eval_loss': '0.01581', 'eval_runtime': '0.0479', 'eval_samples_per_second': '2628', 'eval_steps_per_second': '41.72', 'epoch': '1'}
+{'train_runtime': '88.31', 'train_samples_per_second': '724.7', 'train_steps_per_second': '11.32', 'train_loss': '0.008787', 'epoch': '1'}
+Saved fine-tuned residue quality net -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx256_predlen4\final
+Saved loss history (10 val points) -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx256_predlen4\loss_history.csv
+  val_loss: min=0.01525 (step 700), final=0.01581 (step 1000), final-min=+0.00056 <-- val loss rose from its min: overfitting
+Saved loss curve -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx256_predlen4\loss_history.png
+[2026-09-07 22:48:05] DONE  finetune residue predlen4 ctx256 (1.6 min)
+[2026-09-07 22:48:05] START backtest residue predlen4
+  cmd: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target residue --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx256_predlen4\final --context-length 256 --stride 4 --tag ctx256_predlen4
+----- stdout tail -----
+Saved backtest results -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\eval\backtest_residue_ctx256_predlen4.csv
+
+=== residue backtest (C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx256_predlen4\final) ===
+n = 856  (fresh-reading transitions only: True)
+
+--- Naive baseline (repeat last observed reading) ---
+MAE=0.568  RMSE=1.046  R2=0.5778  spec-in/out accuracy=78.50%
+            Pred IN  Pred OUT
+Actual IN       316       100
+Actual OUT       84       356
+
+--- Chronos-2 ---
+MAE=0.459  RMSE=0.772  R2=0.7701  spec-in/out accuracy=83.06%
+            Pred IN  Pred OUT
+Actual IN       345        71
+Actual OUT       74       366
+
+normalized skill score (per-station model_MAE / naive_MAE, macro-avg) = 0.8086  (beats naive)
+macro-average MAE (equal per station) = 0.4581
+80% interval (q0.1-q0.9) empirical coverage = 69.74% (target: 80%)
+[2026-09-07 22:48:38] DONE  backtest residue predlen4 (0.5 min)
+[2026-09-07 22:48:38] START finetune residue predlen1 ctx256
+  cmd: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target residue --finetune-mode full --prediction-length 1 --context-length 256 --learning-rate 1e-6 --num-steps 1000 --batch-size 64 --output-tag ctx256_predlen1
+----- stdout tail -----
+{'eval_loss': '0', 'eval_runtime': '0.0456', 'eval_samples_per_second': '2764', 'eval_steps_per_second': '43.87', 'epoch': '0.3'}
+{'loss': '0.001925', 'grad_norm': '0.3376', 'learning_rate': '6.01e-07', 'epoch': '0.4'}
+{'eval_loss': '0', 'eval_runtime': '0.0454', 'eval_samples_per_second': '2773', 'eval_steps_per_second': '44.02', 'epoch': '0.4'}
+{'loss': '0.002983', 'grad_norm': '0.6444', 'learning_rate': '5.01e-07', 'epoch': '0.5'}
+{'eval_loss': '0', 'eval_runtime': '0.0473', 'eval_samples_per_second': '2666', 'eval_steps_per_second': '42.32', 'epoch': '0.5'}
+{'loss': '0.002023', 'grad_norm': '0', 'learning_rate': '4.01e-07', 'epoch': '0.6'}
+{'eval_loss': '0', 'eval_runtime': '0.0449', 'eval_samples_per_second': '2808', 'eval_steps_per_second': '44.57', 'epoch': '0.6'}
+{'loss': '0.003402', 'grad_norm': '0.4021', 'learning_rate': '3.01e-07', 'epoch': '0.7'}
+{'eval_loss': '0', 'eval_runtime': '0.0479', 'eval_samples_per_second': '2632', 'eval_steps_per_second': '41.77', 'epoch': '0.7'}
+{'loss': '0.002692', 'grad_norm': '0.2015', 'learning_rate': '2.01e-07', 'epoch': '0.8'}
+{'eval_loss': '0', 'eval_runtime': '0.0458', 'eval_samples_per_second': '2752', 'eval_steps_per_second': '43.68', 'epoch': '0.8'}
+{'loss': '0.002002', 'grad_norm': '0.7731', 'learning_rate': '1.01e-07', 'epoch': '0.9'}
+{'eval_loss': '0', 'eval_runtime': '0.046', 'eval_samples_per_second': '2742', 'eval_steps_per_second': '43.52', 'epoch': '0.9'}
+{'loss': '0.002205', 'grad_norm': '0', 'learning_rate': '1e-09', 'epoch': '1'}
+{'eval_loss': '0', 'eval_runtime': '0.0462', 'eval_samples_per_second': '2727', 'eval_steps_per_second': '43.28', 'epoch': '1'}
+{'train_runtime': '88.2', 'train_samples_per_second': '725.6', 'train_steps_per_second': '11.34', 'train_loss': '0.002365', 'epoch': '1'}
+Saved fine-tuned residue quality net -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx256_predlen1\final
+Saved loss history (10 val points) -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx256_predlen1\loss_history.csv
+  val_loss: min=0.00000 (step 100), final=0.00000 (step 1000), final-min=+0.00000
+Saved loss curve -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx256_predlen1\loss_history.png
+[2026-09-07 22:50:14] DONE  finetune residue predlen1 ctx256 (1.6 min)
+[2026-09-07 22:50:14] START backtest residue predlen1
+  cmd: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target residue --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx256_predlen1\final --context-length 256 --stride 4 --tag ctx256_predlen1
+----- stdout tail -----
+Saved backtest results -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\eval\backtest_residue_ctx256_predlen1.csv
+
+=== residue backtest (C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx256_predlen1\final) ===
+n = 856  (fresh-reading transitions only: True)
+
+--- Naive baseline (repeat last observed reading) ---
+MAE=0.568  RMSE=1.046  R2=0.5778  spec-in/out accuracy=78.50%
+            Pred IN  Pred OUT
+Actual IN       316       100
+Actual OUT       84       356
+
+--- Chronos-2 ---
+MAE=0.478  RMSE=0.799  R2=0.7536  spec-in/out accuracy=82.59%
+            Pred IN  Pred OUT
+Actual IN       344        72
+Actual OUT       77       363
+
+normalized skill score (per-station model_MAE / naive_MAE, macro-avg) = 0.8423  (beats naive)
+macro-average MAE (equal per station) = 0.4778
+80% interval (q0.1-q0.9) empirical coverage = 72.90% (target: 80%)
+[2026-09-07 22:50:46] DONE  backtest residue predlen1 (0.5 min)
+[2026-09-07 22:50:46] === predlen A/B complete ===

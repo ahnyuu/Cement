@@ -1,0 +1,10 @@
+chronos-forecasting>=2.3.1
+peft>=0.10          # required for --finetune-mode lora
+pandas>=2.2
+numpy>=1.26
+scikit-learn>=1.4
+openpyxl>=3.1
+matplotlib>=3.8     # required for results.ipynb
+nbformat>=5.10       # required to build/execute results.ipynb
+nbconvert>=7.16      # required to execute results.ipynb (jupyter nbconvert --execute)
+ipykernel>=6.29      # execution kernel for results.ipynb

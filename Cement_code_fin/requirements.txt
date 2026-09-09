@@ -1,0 +1,8 @@
+chronos-forecasting>=2.3.1
+peft>=0.10          # only needed for --finetune-mode lora
+pandas>=2.2
+numpy>=1.26
+scikit-learn>=1.4
+openpyxl>=3.1       # only needed by data/build_dataset.py
+matplotlib>=3.8     # loss curve plot in train/finetune_chronos2.py
+transformers>=4.40  # TrainerCallback for live loss history

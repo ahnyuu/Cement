@@ -1,0 +1,23 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/170 [00:00<?, ?it/s]Loading weights:  64%|######4   | 109/170 [00:00<00:00, 1083.43it/s]Loading weights: 100%|##########| 170/170 [00:00<00:00, 1129.72it/s]
+2CM: 298 eval points
+3CM: 268 eval points
+4CM: 290 eval points
+Saved backtest results -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code\chronos_quality\eval\backtest_residue_predlen4_ctx1536_lora_measured.csv
+
+=== residue backtest (checkpoints/residue_predlen4_ctx1536_lora_measured/final) ===
+n = 856  (fresh-reading transitions only: True)
+
+--- Naive baseline (repeat last observed reading) ---
+MAE=0.57  RMSE=1.05  R2=0.5778  spec-in/out accuracy=78.50%
+            Pred IN  Pred OUT
+Actual IN       316       100
+Actual OUT       84       356
+
+--- Chronos-2 ---
+MAE=0.50  RMSE=0.82  R2=0.7413  spec-in/out accuracy=81.07%
+            Pred IN  Pred OUT
+Actual IN       350        66
+Actual OUT       96       344
+
+80% interval (q0.1-q0.9) empirical coverage = 55.61% (target: 80%)

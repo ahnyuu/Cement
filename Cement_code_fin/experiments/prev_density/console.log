@@ -1,0 +1,18 @@
+[2026-09-07 23:12:23] === prev-density A/B start (ctx={'blaine': 512, 'residue': 256}, full/predlen4/1000steps/lr1e-6/batch64) ===
+[2026-09-07 23:12:23] START finetune blaine sparse ctx512  (CHRONOS_PROCESSED_CSV=data/processed/prev_sparse/quality_timeseries.csv)
+[2026-09-07 23:15:17] DONE  finetune blaine sparse ctx512 (2.9 min)
+[2026-09-07 23:15:17] START backtest blaine sparse  (CHRONOS_PROCESSED_CSV=data/processed/prev_sparse/quality_timeseries.csv)
+[2026-09-07 23:16:09] DONE  backtest blaine sparse (0.9 min)
+[2026-09-07 23:16:09] START finetune blaine ffill ctx512  (CHRONOS_PROCESSED_CSV=data/processed/prev_ffill/quality_timeseries.csv)
+[2026-09-07 23:18:43] DONE  finetune blaine ffill ctx512 (2.6 min)
+[2026-09-07 23:18:43] START backtest blaine ffill  (CHRONOS_PROCESSED_CSV=data/processed/prev_ffill/quality_timeseries.csv)
+[2026-09-07 23:19:35] DONE  backtest blaine ffill (0.9 min)
+[2026-09-07 23:19:35] START finetune residue sparse ctx256  (CHRONOS_PROCESSED_CSV=data/processed/prev_sparse/quality_timeseries.csv)
+[2026-09-07 23:21:12] DONE  finetune residue sparse ctx256 (1.6 min)
+[2026-09-07 23:21:12] START backtest residue sparse  (CHRONOS_PROCESSED_CSV=data/processed/prev_sparse/quality_timeseries.csv)
+[2026-09-07 23:21:45] DONE  backtest residue sparse (0.5 min)
+[2026-09-07 23:21:45] START finetune residue ffill ctx256  (CHRONOS_PROCESSED_CSV=data/processed/prev_ffill/quality_timeseries.csv)
+[2026-09-07 23:23:21] DONE  finetune residue ffill ctx256 (1.6 min)
+[2026-09-07 23:23:21] START backtest residue ffill  (CHRONOS_PROCESSED_CSV=data/processed/prev_ffill/quality_timeseries.csv)
+[2026-09-07 23:23:54] DONE  backtest residue ffill (0.5 min)
+[2026-09-07 23:23:54] === prev-density A/B complete ===

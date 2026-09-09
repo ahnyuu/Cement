@@ -1,0 +1,62 @@
+[2026-09-06 03:17:23] === ctx sweep start (targets=['blaine', 'residue'], ctx=[512, 768, 1024, 1280, 1536], steps=1000) ===
+[2026-09-06 03:17:23] START finetune blaine ctx512: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target blaine --context-length 512 --num-steps 1000 --output-tag ctx512
+[2026-09-06 03:19:56] DONE  finetune blaine ctx512 (2.6 min)
+[2026-09-06 03:19:56] START backtest blaine ctx512 zeroshot: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target blaine --checkpoint amazon/chronos-2 --context-length 512 --stride 4 --tag ctx512_zeroshot
+[2026-09-06 03:20:48] DONE  backtest blaine ctx512 zeroshot (0.9 min)
+[2026-09-06 03:20:48] START backtest blaine ctx512 full: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target blaine --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx512\final --context-length 512 --stride 4 --tag ctx512_full
+[2026-09-06 03:21:39] DONE  backtest blaine ctx512 full (0.9 min)
+[2026-09-06 03:21:39] START finetune blaine ctx768: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target blaine --context-length 768 --num-steps 1000 --output-tag ctx768
+[2026-09-06 03:25:15] DONE  finetune blaine ctx768 (3.6 min)
+[2026-09-06 03:25:15] START backtest blaine ctx768 zeroshot: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target blaine --checkpoint amazon/chronos-2 --context-length 768 --stride 4 --tag ctx768_zeroshot
+[2026-09-06 03:26:25] DONE  backtest blaine ctx768 zeroshot (1.2 min)
+[2026-09-06 03:26:25] START backtest blaine ctx768 full: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target blaine --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx768\final --context-length 768 --stride 4 --tag ctx768_full
+[2026-09-06 03:27:33] DONE  backtest blaine ctx768 full (1.1 min)
+[2026-09-06 03:27:33] START finetune blaine ctx1024: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target blaine --context-length 1024 --num-steps 1000 --output-tag ctx1024
+[2026-09-06 03:45:32] DONE  finetune blaine ctx1024 (18.0 min)
+[2026-09-06 03:45:32] START backtest blaine ctx1024 zeroshot: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target blaine --checkpoint amazon/chronos-2 --context-length 1024 --stride 4 --tag ctx1024_zeroshot
+[2026-09-06 03:47:02] DONE  backtest blaine ctx1024 zeroshot (1.5 min)
+[2026-09-06 03:47:02] START backtest blaine ctx1024 full: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target blaine --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx1024\final --context-length 1024 --stride 4 --tag ctx1024_full
+[2026-09-06 03:48:31] DONE  backtest blaine ctx1024 full (1.5 min)
+[2026-09-06 03:48:31] START finetune blaine ctx1280: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target blaine --context-length 1280 --num-steps 1000 --output-tag ctx1280
+[2026-09-06 04:56:30] DONE  finetune blaine ctx1280 (68.0 min)
+[2026-09-06 04:56:30] START backtest blaine ctx1280 zeroshot: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target blaine --checkpoint amazon/chronos-2 --context-length 1280 --stride 4 --tag ctx1280_zeroshot
+[2026-09-06 04:58:19] DONE  backtest blaine ctx1280 zeroshot (1.8 min)
+[2026-09-06 04:58:19] START backtest blaine ctx1280 full: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target blaine --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx1280\final --context-length 1280 --stride 4 --tag ctx1280_full
+[2026-09-06 05:00:07] DONE  backtest blaine ctx1280 full (1.8 min)
+[2026-09-06 05:00:07] START finetune blaine ctx1536: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target blaine --context-length 1536 --num-steps 1000 --output-tag ctx1536
+[2026-09-06 06:34:07] DONE  finetune blaine ctx1536 (94.0 min)
+[2026-09-06 06:34:07] START backtest blaine ctx1536 zeroshot: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target blaine --checkpoint amazon/chronos-2 --context-length 1536 --stride 4 --tag ctx1536_zeroshot
+[2026-09-06 06:36:15] DONE  backtest blaine ctx1536 zeroshot (2.1 min)
+[2026-09-06 06:36:15] START backtest blaine ctx1536 full: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target blaine --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\blaine_ctx1536\final --context-length 1536 --stride 4 --tag ctx1536_full
+[2026-09-06 06:38:23] DONE  backtest blaine ctx1536 full (2.1 min)
+[2026-09-06 06:38:23] START finetune residue ctx512: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target residue --context-length 512 --num-steps 1000 --output-tag ctx512
+[2026-09-06 06:40:57] DONE  finetune residue ctx512 (2.6 min)
+[2026-09-06 06:40:57] START backtest residue ctx512 zeroshot: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target residue --checkpoint amazon/chronos-2 --context-length 512 --stride 4 --tag ctx512_zeroshot
+[2026-09-06 06:41:49] DONE  backtest residue ctx512 zeroshot (0.9 min)
+[2026-09-06 06:41:49] START backtest residue ctx512 full: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target residue --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx512\final --context-length 512 --stride 4 --tag ctx512_full
+[2026-09-06 06:42:41] DONE  backtest residue ctx512 full (0.9 min)
+[2026-09-06 06:42:41] START finetune residue ctx768: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target residue --context-length 768 --num-steps 1000 --output-tag ctx768
+[2026-09-06 06:46:17] DONE  finetune residue ctx768 (3.6 min)
+[2026-09-06 06:46:17] START backtest residue ctx768 zeroshot: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target residue --checkpoint amazon/chronos-2 --context-length 768 --stride 4 --tag ctx768_zeroshot
+[2026-09-06 06:47:27] DONE  backtest residue ctx768 zeroshot (1.2 min)
+[2026-09-06 06:47:27] START backtest residue ctx768 full: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target residue --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx768\final --context-length 768 --stride 4 --tag ctx768_full
+[2026-09-06 06:48:36] DONE  backtest residue ctx768 full (1.1 min)
+[2026-09-06 06:48:36] START finetune residue ctx1024: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target residue --context-length 1024 --num-steps 1000 --output-tag ctx1024
+[2026-09-06 07:06:05] DONE  finetune residue ctx1024 (17.5 min)
+[2026-09-06 07:06:05] START backtest residue ctx1024 zeroshot: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target residue --checkpoint amazon/chronos-2 --context-length 1024 --stride 4 --tag ctx1024_zeroshot
+[2026-09-06 07:07:35] DONE  backtest residue ctx1024 zeroshot (1.5 min)
+[2026-09-06 07:07:35] START backtest residue ctx1024 full: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target residue --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx1024\final --context-length 1024 --stride 4 --tag ctx1024_full
+[2026-09-06 07:09:04] DONE  backtest residue ctx1024 full (1.5 min)
+[2026-09-06 07:09:04] START finetune residue ctx1280: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target residue --context-length 1280 --num-steps 1000 --output-tag ctx1280
+[2026-09-06 08:15:22] DONE  finetune residue ctx1280 (66.3 min)
+[2026-09-06 08:15:22] START backtest residue ctx1280 zeroshot: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target residue --checkpoint amazon/chronos-2 --context-length 1280 --stride 4 --tag ctx1280_zeroshot
+[2026-09-06 08:17:11] DONE  backtest residue ctx1280 zeroshot (1.8 min)
+[2026-09-06 08:17:11] START backtest residue ctx1280 full: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target residue --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx1280\final --context-length 1280 --stride 4 --tag ctx1280_full
+[2026-09-06 08:18:59] DONE  backtest residue ctx1280 full (1.8 min)
+[2026-09-06 08:18:59] START finetune residue ctx1536: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe train/finetune_chronos2.py --target residue --context-length 1536 --num-steps 1000 --output-tag ctx1536
+[2026-09-06 09:51:06] DONE  finetune residue ctx1536 (92.1 min)
+[2026-09-06 09:51:06] START backtest residue ctx1536 zeroshot: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target residue --checkpoint amazon/chronos-2 --context-length 1536 --stride 4 --tag ctx1536_zeroshot
+[2026-09-06 09:53:14] DONE  backtest residue ctx1536 zeroshot (2.1 min)
+[2026-09-06 09:53:14] START backtest residue ctx1536 full: C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\.venv\Scripts\python.exe eval/backtest.py --target residue --checkpoint C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code_fin\checkpoints\residue_ctx1536\final --context-length 1536 --stride 4 --tag ctx1536_full
+[2026-09-06 09:55:22] DONE  backtest residue ctx1536 full (2.1 min)
+[2026-09-06 09:55:22] === ctx sweep complete ===

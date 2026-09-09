@@ -1,0 +1,25 @@
+# Python 실행 환경
+**/runtime/
+**/venv/
+**/.venv/
+**/env/
+**/site-packages/
+
+# Python 캐시
+**/__pycache__/
+*.py[cod]
+
+# VS Code 설정
+.vscode/
+
+# 환경변수
+.env
+
+# 모델 체크포인트
+**/checkpoints/
+
+# 압축 백업 파일
+*.zip
+
+# 학습된 모델 가중치
+*.h5

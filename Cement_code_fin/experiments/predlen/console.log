@@ -1,0 +1,18 @@
+[2026-09-07 22:39:36] === predlen A/B start (ctx={'blaine': 512, 'residue': 256}, predlens=[4, 1], full/1000steps/lr1e-6/batch64) ===
+[2026-09-07 22:39:36] START finetune blaine predlen4 ctx512
+[2026-09-07 22:42:13] DONE  finetune blaine predlen4 ctx512 (2.6 min)
+[2026-09-07 22:42:13] START backtest blaine predlen4
+[2026-09-07 22:43:04] DONE  backtest blaine predlen4 (0.9 min)
+[2026-09-07 22:43:04] START finetune blaine predlen1 ctx512
+[2026-09-07 22:45:38] DONE  finetune blaine predlen1 ctx512 (2.6 min)
+[2026-09-07 22:45:38] START backtest blaine predlen1
+[2026-09-07 22:46:29] DONE  backtest blaine predlen1 (0.9 min)
+[2026-09-07 22:46:29] START finetune residue predlen4 ctx256
+[2026-09-07 22:48:05] DONE  finetune residue predlen4 ctx256 (1.6 min)
+[2026-09-07 22:48:05] START backtest residue predlen4
+[2026-09-07 22:48:38] DONE  backtest residue predlen4 (0.5 min)
+[2026-09-07 22:48:38] START finetune residue predlen1 ctx256
+[2026-09-07 22:50:14] DONE  finetune residue predlen1 ctx256 (1.6 min)
+[2026-09-07 22:50:14] START backtest residue predlen1
+[2026-09-07 22:50:46] DONE  backtest residue predlen1 (0.5 min)
+[2026-09-07 22:50:46] === predlen A/B complete ===

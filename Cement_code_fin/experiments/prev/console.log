@@ -1,0 +1,18 @@
+[2026-09-07 22:13:09] === prev A/B start (ctx={'blaine': 512, 'residue': 256}, full/predlen4/1000steps/lr1e-6/batch64) ===
+[2026-09-07 22:13:09] START finetune blaine prev ctx512
+[2026-09-07 22:15:45] DONE  finetune blaine prev ctx512 (2.6 min)
+[2026-09-07 22:15:45] START backtest blaine prev
+[2026-09-07 22:16:43] DONE  backtest blaine prev (1.0 min)
+[2026-09-07 22:16:43] START finetune blaine noprev ctx512
+[2026-09-07 22:19:12] DONE  finetune blaine noprev ctx512 (2.5 min)
+[2026-09-07 22:19:12] START backtest blaine noprev
+[2026-09-07 22:20:02] DONE  backtest blaine noprev (0.8 min)
+[2026-09-07 22:20:02] START finetune residue prev ctx256
+[2026-09-07 22:21:39] DONE  finetune residue prev ctx256 (1.6 min)
+[2026-09-07 22:21:39] START backtest residue prev
+[2026-09-07 22:22:12] DONE  backtest residue prev (0.5 min)
+[2026-09-07 22:22:12] START finetune residue noprev ctx256
+[2026-09-07 22:23:45] DONE  finetune residue noprev ctx256 (1.6 min)
+[2026-09-07 22:23:45] START backtest residue noprev
+[2026-09-07 22:24:17] DONE  backtest residue noprev (0.5 min)
+[2026-09-07 22:24:17] === prev A/B complete ===

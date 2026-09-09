@@ -1,0 +1,16 @@
+설치방법 (20260130, 문인용)
+
+0. python-3.8.7-amd64 설치 
+ - Add Pyton to PATH 필수
+ - Install for all users (가능하면)
+
+1. CementUI 폴더 내의 runtime 폴더 삭제
+
+2. cmd 창에서 CementUI폴더로 이동 후 아래 명령어로 runtime 설치
+명령어: python -m venv runtime
+
+3. cmd 창에서 아래 명령어로 python 패키지 설치
+명령어1: runtime\Scripts\python -m pip install --upgrade pip
+명령어2: runtime\Scripts\python -m pip install streamlit tensorflow scikit-learn joblib pandas numpy matplotlib
+
+`CementUI.exe`로 실행

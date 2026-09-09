@@ -1,0 +1,13 @@
+=== Sat Sep  5 17:22:52     2026 : backtest blaine ctx=1024 ckpt=amazon/chronos-2 tag=predlen4_ctx1024_zeroshot_measured ===
+=== Sat Sep  5 17:24:23     2026 : done predlen4_ctx1024_zeroshot_measured (exit 0) ===
+=== Sat Sep  5 17:24:23     2026 : backtest blaine ctx=1024 ckpt=checkpoints/blaine_predlen4_ctx1024_lora_measured/final tag=predlen4_ctx1024_lora_measured ===
+=== Sat Sep  5 17:26:15     2026 : done predlen4_ctx1024_lora_measured (exit 0) ===
+=== Sat Sep  5 17:26:15     2026 : backtest blaine ctx=1024 ckpt=checkpoints/blaine_predlen4_ctx1024_full_measured/final tag=predlen4_ctx1024_full_measured ===
+=== Sat Sep  5 17:27:45     2026 : done predlen4_ctx1024_full_measured (exit 0) ===
+=== Sat Sep  5 17:27:45     2026 : backtest residue ctx=1536 ckpt=amazon/chronos-2 tag=predlen4_ctx1536_zeroshot_measured ===
+=== Sat Sep  5 17:29:55     2026 : done predlen4_ctx1536_zeroshot_measured (exit 0) ===
+=== Sat Sep  5 17:29:55     2026 : backtest residue ctx=1536 ckpt=checkpoints/residue_predlen4_ctx1536_lora_measured/final tag=predlen4_ctx1536_lora_measured ===
+=== Sat Sep  5 17:32:37     2026 : done predlen4_ctx1536_lora_measured (exit 0) ===
+=== Sat Sep  5 17:32:37     2026 : backtest residue ctx=1536 ckpt=checkpoints/residue_predlen4_ctx1536_full_measured/final tag=predlen4_ctx1536_full_measured ===
+=== Sat Sep  5 17:34:45     2026 : done predlen4_ctx1536_full_measured (exit 0) ===
+=== ALL BACKTESTS DONE ===

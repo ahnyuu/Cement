@@ -1,0 +1,23 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/170 [00:00<?, ?it/s]Loading weights:  64%|######4   | 109/170 [00:00<00:00, 1089.73it/s]Loading weights: 100%|##########| 170/170 [00:00<00:00, 1123.62it/s]
+2CM: 297 eval points
+3CM: 266 eval points
+4CM: 289 eval points
+Saved backtest results -> C:\Users\lhgdr\Desktop\Kitech\Cement\Cement_code\chronos_quality\eval\backtest_blaine_predlen4_ctx1024_zeroshot_measured.csv
+
+=== blaine backtest (amazon/chronos-2) ===
+n = 852  (fresh-reading transitions only: True)
+
+--- Naive baseline (repeat last observed reading) ---
+MAE=83.76  RMSE=118.82  R2=0.1625  spec-in/out accuracy=67.02%
+            Pred IN  Pred OUT
+Actual IN       265       139
+Actual OUT      142       306
+
+--- Chronos-2 ---
+MAE=75.51  RMSE=101.37  R2=0.3904  spec-in/out accuracy=67.84%
+            Pred IN  Pred OUT
+Actual IN       237       167
+Actual OUT      107       341
+
+80% interval (q0.1-q0.9) empirical coverage = 61.97% (target: 80%)

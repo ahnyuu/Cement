@@ -1,0 +1,192 @@
+[2026-09-06 17:38:44] === ctx matrix start (targets=['blaine', 'residue'], ctx=[24, 73, 128, 168, 256, 384, 512, 768, 1024, 1280, 1536], methods=zeroshot/lora/full, steps=1000) ===
+[2026-09-06 17:38:44] START backtest blaine zeroshot ctx24
+[2026-09-06 17:39:06] DONE  backtest blaine zeroshot ctx24 (0.4 min)
+[2026-09-06 17:39:06] START finetune blaine lora ctx24
+[2026-09-06 17:40:34] DONE  finetune blaine lora ctx24 (1.5 min)
+[2026-09-06 17:40:34] START backtest blaine lora ctx24
+[2026-09-06 17:40:57] DONE  backtest blaine lora ctx24 (0.4 min)
+[2026-09-06 17:40:57] START finetune blaine full ctx24
+[2026-09-06 17:42:09] DONE  finetune blaine full ctx24 (1.2 min)
+[2026-09-06 17:42:09] START backtest blaine full ctx24
+[2026-09-06 17:42:30] DONE  backtest blaine full ctx24 (0.3 min)
+[2026-09-06 17:42:30] START backtest residue zeroshot ctx24
+[2026-09-06 17:42:52] DONE  backtest residue zeroshot ctx24 (0.4 min)
+[2026-09-06 17:42:52] START finetune residue lora ctx24
+[2026-09-06 17:44:19] DONE  finetune residue lora ctx24 (1.5 min)
+[2026-09-06 17:44:19] START backtest residue lora ctx24
+[2026-09-06 17:44:42] DONE  backtest residue lora ctx24 (0.4 min)
+[2026-09-06 17:44:42] START finetune residue full ctx24
+[2026-09-06 17:45:54] DONE  finetune residue full ctx24 (1.2 min)
+[2026-09-06 17:45:54] START backtest residue full ctx24
+[2026-09-06 17:46:14] DONE  backtest residue full ctx24 (0.3 min)
+[2026-09-06 17:46:14] START backtest blaine zeroshot ctx73
+[2026-09-06 17:46:39] DONE  backtest blaine zeroshot ctx73 (0.4 min)
+[2026-09-06 17:46:39] START finetune blaine lora ctx73
+[2026-09-06 17:48:07] DONE  finetune blaine lora ctx73 (1.5 min)
+[2026-09-06 17:48:07] START backtest blaine lora ctx73
+[2026-09-06 17:48:34] DONE  backtest blaine lora ctx73 (0.4 min)
+[2026-09-06 17:48:34] START finetune blaine full ctx73
+[2026-09-06 17:49:47] DONE  finetune blaine full ctx73 (1.2 min)
+[2026-09-06 17:49:47] START backtest blaine full ctx73
+[2026-09-06 17:50:10] DONE  backtest blaine full ctx73 (0.4 min)
+[2026-09-06 17:50:10] START backtest residue zeroshot ctx73
+[2026-09-06 17:50:35] DONE  backtest residue zeroshot ctx73 (0.4 min)
+[2026-09-06 17:50:35] START finetune residue lora ctx73
+[2026-09-06 17:52:03] DONE  finetune residue lora ctx73 (1.5 min)
+[2026-09-06 17:52:03] START backtest residue lora ctx73
+[2026-09-06 17:52:30] DONE  backtest residue lora ctx73 (0.4 min)
+[2026-09-06 17:52:30] START finetune residue full ctx73
+[2026-09-06 17:53:43] DONE  finetune residue full ctx73 (1.2 min)
+[2026-09-06 17:53:43] START backtest residue full ctx73
+[2026-09-06 17:54:06] DONE  backtest residue full ctx73 (0.4 min)
+[2026-09-06 17:54:06] START backtest blaine zeroshot ctx128
+[2026-09-06 17:54:34] DONE  backtest blaine zeroshot ctx128 (0.5 min)
+[2026-09-06 17:54:34] START finetune blaine lora ctx128
+[2026-09-06 17:56:06] DONE  finetune blaine lora ctx128 (1.5 min)
+[2026-09-06 17:56:06] START backtest blaine lora ctx128
+[2026-09-06 17:56:37] DONE  backtest blaine lora ctx128 (0.5 min)
+[2026-09-06 17:56:37] START finetune blaine full ctx128
+[2026-09-06 17:57:58] DONE  finetune blaine full ctx128 (1.3 min)
+[2026-09-06 17:57:58] START backtest blaine full ctx128
+[2026-09-06 17:58:25] DONE  backtest blaine full ctx128 (0.4 min)
+[2026-09-06 17:58:25] START backtest residue zeroshot ctx128
+[2026-09-06 17:58:53] DONE  backtest residue zeroshot ctx128 (0.5 min)
+[2026-09-06 17:58:53] START finetune residue lora ctx128
+[2026-09-06 18:00:26] DONE  finetune residue lora ctx128 (1.5 min)
+[2026-09-06 18:00:26] START backtest residue lora ctx128
+[2026-09-06 18:00:57] DONE  backtest residue lora ctx128 (0.5 min)
+[2026-09-06 18:00:57] START finetune residue full ctx128
+[2026-09-06 18:02:18] DONE  finetune residue full ctx128 (1.3 min)
+[2026-09-06 18:02:18] START backtest residue full ctx128
+[2026-09-06 18:02:45] DONE  backtest residue full ctx128 (0.4 min)
+[2026-09-06 18:02:45] START backtest blaine zeroshot ctx168
+[2026-09-06 18:03:16] DONE  backtest blaine zeroshot ctx168 (0.5 min)
+[2026-09-06 18:03:16] START finetune blaine lora ctx168
+[2026-09-06 18:04:49] DONE  finetune blaine lora ctx168 (1.5 min)
+[2026-09-06 18:04:49] START backtest blaine lora ctx168
+[2026-09-06 18:05:25] DONE  backtest blaine lora ctx168 (0.6 min)
+[2026-09-06 18:05:25] START finetune blaine full ctx168
+[2026-09-06 18:06:54] DONE  finetune blaine full ctx168 (1.5 min)
+[2026-09-06 18:06:54] START backtest blaine full ctx168
+[2026-09-06 18:07:24] DONE  backtest blaine full ctx168 (0.5 min)
+[2026-09-06 18:07:24] START backtest residue zeroshot ctx168
+[2026-09-06 18:07:56] DONE  backtest residue zeroshot ctx168 (0.5 min)
+[2026-09-06 18:07:56] START finetune residue lora ctx168
+[2026-09-06 18:09:29] DONE  finetune residue lora ctx168 (1.5 min)
+[2026-09-06 18:09:29] START backtest residue lora ctx168
+[2026-09-06 18:10:05] DONE  backtest residue lora ctx168 (0.6 min)
+[2026-09-06 18:10:05] START finetune residue full ctx168
+[2026-09-06 18:11:33] DONE  finetune residue full ctx168 (1.5 min)
+[2026-09-06 18:11:33] START backtest residue full ctx168
+[2026-09-06 18:12:04] DONE  backtest residue full ctx168 (0.5 min)
+[2026-09-06 18:12:04] START backtest blaine zeroshot ctx256
+[2026-09-06 18:12:37] DONE  backtest blaine zeroshot ctx256 (0.6 min)
+[2026-09-06 18:12:37] START finetune blaine lora ctx256
+[2026-09-06 18:14:13] DONE  finetune blaine lora ctx256 (1.6 min)
+[2026-09-06 18:14:13] START backtest blaine lora ctx256
+[2026-09-06 18:14:54] DONE  backtest blaine lora ctx256 (0.7 min)
+[2026-09-06 18:14:54] START finetune blaine full ctx256
+[2026-09-06 18:16:30] DONE  finetune blaine full ctx256 (1.6 min)
+[2026-09-06 18:16:30] START backtest blaine full ctx256
+[2026-09-06 18:17:02] DONE  backtest blaine full ctx256 (0.5 min)
+[2026-09-06 18:17:02] START backtest residue zeroshot ctx256
+[2026-09-06 18:17:37] DONE  backtest residue zeroshot ctx256 (0.6 min)
+[2026-09-06 18:17:37] START finetune residue lora ctx256
+[2026-09-06 18:19:12] DONE  finetune residue lora ctx256 (1.6 min)
+[2026-09-06 18:19:12] START backtest residue lora ctx256
+[2026-09-06 18:19:53] DONE  backtest residue lora ctx256 (0.7 min)
+[2026-09-06 18:19:53] START finetune residue full ctx256
+[2026-09-06 18:21:29] DONE  finetune residue full ctx256 (1.6 min)
+[2026-09-06 18:21:29] START backtest residue full ctx256
+[2026-09-06 18:22:02] DONE  backtest residue full ctx256 (0.5 min)
+[2026-09-06 18:22:02] START backtest blaine zeroshot ctx384
+[2026-09-06 18:22:48] DONE  backtest blaine zeroshot ctx384 (0.8 min)
+[2026-09-06 18:22:48] START finetune blaine lora ctx384
+[2026-09-06 18:24:47] DONE  finetune blaine lora ctx384 (2.0 min)
+[2026-09-06 18:24:47] START backtest blaine lora ctx384
+[2026-09-06 18:25:42] DONE  backtest blaine lora ctx384 (0.9 min)
+[2026-09-06 18:25:42] START finetune blaine full ctx384
+[2026-09-06 18:27:47] DONE  finetune blaine full ctx384 (2.1 min)
+[2026-09-06 18:27:47] START backtest blaine full ctx384
+[2026-09-06 18:28:32] DONE  backtest blaine full ctx384 (0.8 min)
+[2026-09-06 18:28:32] START backtest residue zeroshot ctx384
+[2026-09-06 18:29:19] DONE  backtest residue zeroshot ctx384 (0.8 min)
+[2026-09-06 18:29:19] START finetune residue lora ctx384
+[2026-09-06 18:31:18] DONE  finetune residue lora ctx384 (2.0 min)
+[2026-09-06 18:31:18] START backtest residue lora ctx384
+[2026-09-06 18:32:13] DONE  backtest residue lora ctx384 (0.9 min)
+[2026-09-06 18:32:13] START finetune residue full ctx384
+[2026-09-06 18:34:18] DONE  finetune residue full ctx384 (2.1 min)
+[2026-09-06 18:34:18] START backtest residue full ctx384
+[2026-09-06 18:35:04] DONE  backtest residue full ctx384 (0.8 min)
+[2026-09-06 18:35:04] SKIP  backtest blaine zeroshot ctx512 (csv exists)
+[2026-09-06 18:35:04] START finetune blaine lora ctx512
+[2026-09-06 18:37:31] DONE  finetune blaine lora ctx512 (2.5 min)
+[2026-09-06 18:37:31] START backtest blaine lora ctx512
+[2026-09-06 18:38:36] DONE  backtest blaine lora ctx512 (1.1 min)
+[2026-09-06 18:38:36] SKIP  finetune blaine full ctx512 (checkpoint exists)
+[2026-09-06 18:38:36] SKIP  backtest blaine full ctx512 (csv exists)
+[2026-09-06 18:38:36] SKIP  backtest residue zeroshot ctx512 (csv exists)
+[2026-09-06 18:38:36] START finetune residue lora ctx512
+[2026-09-06 18:41:03] DONE  finetune residue lora ctx512 (2.5 min)
+[2026-09-06 18:41:03] START backtest residue lora ctx512
+[2026-09-06 18:42:08] DONE  backtest residue lora ctx512 (1.1 min)
+[2026-09-06 18:42:08] SKIP  finetune residue full ctx512 (checkpoint exists)
+[2026-09-06 18:42:08] SKIP  backtest residue full ctx512 (csv exists)
+[2026-09-06 18:42:08] SKIP  backtest blaine zeroshot ctx768 (csv exists)
+[2026-09-06 18:42:08] START finetune blaine lora ctx768
+[2026-09-06 18:45:35] DONE  finetune blaine lora ctx768 (3.5 min)
+[2026-09-06 18:45:35] START backtest blaine lora ctx768
+[2026-09-06 18:47:01] DONE  backtest blaine lora ctx768 (1.4 min)
+[2026-09-06 18:47:01] SKIP  finetune blaine full ctx768 (checkpoint exists)
+[2026-09-06 18:47:01] SKIP  backtest blaine full ctx768 (csv exists)
+[2026-09-06 18:47:01] SKIP  backtest residue zeroshot ctx768 (csv exists)
+[2026-09-06 18:47:01] START finetune residue lora ctx768
+[2026-09-06 18:50:26] DONE  finetune residue lora ctx768 (3.4 min)
+[2026-09-06 18:50:26] START backtest residue lora ctx768
+[2026-09-06 18:51:52] DONE  backtest residue lora ctx768 (1.4 min)
+[2026-09-06 18:51:52] SKIP  finetune residue full ctx768 (checkpoint exists)
+[2026-09-06 18:51:52] SKIP  backtest residue full ctx768 (csv exists)
+[2026-09-06 18:51:52] SKIP  backtest blaine zeroshot ctx1024 (csv exists)
+[2026-09-06 18:51:52] START finetune blaine lora ctx1024
+[2026-09-06 18:56:36] DONE  finetune blaine lora ctx1024 (4.7 min)
+[2026-09-06 18:56:36] START backtest blaine lora ctx1024
+[2026-09-06 18:58:28] DONE  backtest blaine lora ctx1024 (1.9 min)
+[2026-09-06 18:58:28] SKIP  finetune blaine full ctx1024 (checkpoint exists)
+[2026-09-06 18:58:28] SKIP  backtest blaine full ctx1024 (csv exists)
+[2026-09-06 18:58:28] SKIP  backtest residue zeroshot ctx1024 (csv exists)
+[2026-09-06 18:58:28] START finetune residue lora ctx1024
+[2026-09-06 19:03:13] DONE  finetune residue lora ctx1024 (4.7 min)
+[2026-09-06 19:03:13] START backtest residue lora ctx1024
+[2026-09-06 19:05:05] DONE  backtest residue lora ctx1024 (1.9 min)
+[2026-09-06 19:05:05] SKIP  finetune residue full ctx1024 (checkpoint exists)
+[2026-09-06 19:05:05] SKIP  backtest residue full ctx1024 (csv exists)
+[2026-09-06 19:05:05] SKIP  backtest blaine zeroshot ctx1280 (csv exists)
+[2026-09-06 19:05:05] START finetune blaine lora ctx1280
+[2026-09-06 19:11:06] DONE  finetune blaine lora ctx1280 (6.0 min)
+[2026-09-06 19:11:06] START backtest blaine lora ctx1280
+[2026-09-06 19:13:22] DONE  backtest blaine lora ctx1280 (2.3 min)
+[2026-09-06 19:13:22] SKIP  finetune blaine full ctx1280 (checkpoint exists)
+[2026-09-06 19:13:22] SKIP  backtest blaine full ctx1280 (csv exists)
+[2026-09-06 19:13:22] SKIP  backtest residue zeroshot ctx1280 (csv exists)
+[2026-09-06 19:13:22] START finetune residue lora ctx1280
+[2026-09-06 19:19:24] DONE  finetune residue lora ctx1280 (6.0 min)
+[2026-09-06 19:19:24] START backtest residue lora ctx1280
+[2026-09-06 19:21:40] DONE  backtest residue lora ctx1280 (2.3 min)
+[2026-09-06 19:21:40] SKIP  finetune residue full ctx1280 (checkpoint exists)
+[2026-09-06 19:21:40] SKIP  backtest residue full ctx1280 (csv exists)
+[2026-09-06 19:21:40] SKIP  backtest blaine zeroshot ctx1536 (csv exists)
+[2026-09-06 19:21:40] START finetune blaine lora ctx1536
+[2026-09-06 19:29:01] DONE  finetune blaine lora ctx1536 (7.3 min)
+[2026-09-06 19:29:01] START backtest blaine lora ctx1536
+[2026-09-06 19:31:42] DONE  backtest blaine lora ctx1536 (2.7 min)
+[2026-09-06 19:31:42] SKIP  finetune blaine full ctx1536 (checkpoint exists)
+[2026-09-06 19:31:42] SKIP  backtest blaine full ctx1536 (csv exists)
+[2026-09-06 19:31:42] SKIP  backtest residue zeroshot ctx1536 (csv exists)
+[2026-09-06 19:31:42] START finetune residue lora ctx1536
+[2026-09-06 19:38:53] DONE  finetune residue lora ctx1536 (7.2 min)
+[2026-09-06 19:38:53] START backtest residue lora ctx1536
+[2026-09-06 19:41:35] DONE  backtest residue lora ctx1536 (2.7 min)
+[2026-09-06 19:41:35] SKIP  finetune residue full ctx1536 (checkpoint exists)
+[2026-09-06 19:41:35] SKIP  backtest residue full ctx1536 (csv exists)
+[2026-09-06 19:41:35] === ctx matrix complete ===
