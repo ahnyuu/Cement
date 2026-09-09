@@ -1,4 +1,7 @@
 """
+REVISED 2026-09-09: validation-only study; outputs under review_v2.
+The original study description below is retained as historical context.
+
 context_length sweep: {512, 768, 1024, 1280, 1536} x {blaine, residue}.
 
 For each (target, ctx):
@@ -23,8 +26,11 @@ from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from data.research_protocol import checkpoint_complete, evaluation_complete
+
 PY = sys.executable
-LOG = ROOT / "experiments" / "ctx_sweep.log"
+LOG = ROOT / "experiments" / "ctx_sweep_review_v2.log"
 
 TARGETS = ["blaine", "residue"]
 CONTEXT_LENGTHS = [512, 768, 1024, 1280, 1536]
@@ -56,15 +62,16 @@ def run(cmd: list[str], phase: str) -> None:
 
 
 def main() -> None:
+    print("review_v2: parameter selection uses VALIDATION; historical outputs are not reused.")
     log(f"=== ctx sweep start (targets={TARGETS}, ctx={CONTEXT_LENGTHS}, steps={NUM_STEPS}) ===")
     for target in TARGETS:
         for ctx in CONTEXT_LENGTHS:
             tag = f"ctx{ctx}"
-            ckpt = ROOT / "checkpoints" / f"{target}_{tag}" / "final"
-            zs_csv = ROOT / "eval" / f"backtest_{target}_{tag}_zeroshot.csv"
-            ft_csv = ROOT / "eval" / f"backtest_{target}_{tag}_full.csv"
+            ckpt = ROOT / "checkpoints" / "review_v2" / f"{target}_{tag}" / "final"
+            zs_csv = ROOT / "eval" / "review_v2" / "validation" / f"backtest_{target}_{tag}_zeroshot.csv"
+            ft_csv = ROOT / "eval" / "review_v2" / "validation" / f"backtest_{target}_{tag}_full.csv"
 
-            if (ckpt / "config.json").exists():
+            if checkpoint_complete(ckpt):
                 log(f"SKIP  finetune {target} {tag} (checkpoint exists)")
             else:
                 run(
@@ -74,21 +81,21 @@ def main() -> None:
                     f"finetune {target} {tag}",
                 )
 
-            if zs_csv.exists():
+            if evaluation_complete(zs_csv):
                 log(f"SKIP  backtest {target} {tag} zeroshot (csv exists)")
             else:
                 run(
-                    [PY, "eval/backtest.py", "--target", target,
+                    [PY, "eval/backtest.py", "--split", "validation", "--target", target,
                      "--checkpoint", "amazon/chronos-2", "--context-length", str(ctx),
                      "--stride", str(STRIDE), "--tag", f"{tag}_zeroshot"],
                     f"backtest {target} {tag} zeroshot",
                 )
 
-            if ft_csv.exists():
+            if evaluation_complete(ft_csv):
                 log(f"SKIP  backtest {target} {tag} full (csv exists)")
             else:
                 run(
-                    [PY, "eval/backtest.py", "--target", target,
+                    [PY, "eval/backtest.py", "--split", "validation", "--target", target,
                      "--checkpoint", str(ckpt), "--context-length", str(ctx),
                      "--stride", str(STRIDE), "--tag", f"{tag}_full"],
                     f"backtest {target} {tag} full",

@@ -1,4 +1,7 @@
 """
+REVISED 2026-09-09: validation-only study; outputs under review_v2.
+The original study description below is retained as historical context.
+
 Full context_length parameter study, reproducing Cement_code/chronos_quality's
 results_context_comparison.ipynb matrix on the 운전&품질데이터_실측치.xlsx data:
 
@@ -29,8 +32,11 @@ from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from data.research_protocol import checkpoint_complete, evaluation_complete
+
 PY = sys.executable
-LOG = ROOT / "experiments" / "ctx_matrix.log"
+LOG = ROOT / "experiments" / "ctx_matrix_review_v2.log"
 
 TARGETS = ["blaine", "residue"]
 CONTEXT_LENGTHS = [24, 73, 128, 168, 256, 384, 512, 768, 1024, 1280, 1536]
@@ -66,8 +72,8 @@ def run(cmd: list[str], phase: str) -> None:
 
 def finetune(target: str, ctx: int, mode: str) -> Path:
     tag = f"ctx{ctx}" if mode == "full" else f"ctx{ctx}_lora"
-    ckpt_dir = ROOT / "checkpoints" / f"{target}_{tag}"
-    if (ckpt_dir / "final" / "config.json").exists():
+    ckpt_dir = ROOT / "checkpoints" / "review_v2" / f"{target}_{tag}"
+    if checkpoint_complete(ckpt_dir / "final"):
         log(f"SKIP  finetune {target} {mode} ctx{ctx} (checkpoint exists)")
         return ckpt_dir / "final"
     run(
@@ -82,18 +88,19 @@ def finetune(target: str, ctx: int, mode: str) -> Path:
 
 
 def backtest(target: str, ctx: int, method: str, checkpoint: str) -> None:
-    csv = ROOT / "eval" / f"backtest_{target}_ctx{ctx}_{method}.csv"
-    if csv.exists():
+    csv = ROOT / "eval" / "review_v2" / "validation" / f"backtest_{target}_ctx{ctx}_{method}.csv"
+    if evaluation_complete(csv):
         log(f"SKIP  backtest {target} {method} ctx{ctx} (csv exists)")
         return
     run(
-        [PY, "eval/backtest.py", "--target", target, "--checkpoint", checkpoint,
+        [PY, "eval/backtest.py", "--split", "validation", "--target", target, "--checkpoint", checkpoint,
          "--context-length", str(ctx), "--stride", str(STRIDE), "--tag", f"ctx{ctx}_{method}"],
         f"backtest {target} {method} ctx{ctx}",
     )
 
 
 def main() -> None:
+    print("review_v2: parameter selection uses VALIDATION; historical outputs are not reused.")
     log(f"=== ctx matrix start (targets={TARGETS}, ctx={CONTEXT_LENGTHS}, "
         f"methods=zeroshot/lora/full, steps={NUM_STEPS}) ===")
     for ctx in CONTEXT_LENGTHS:
