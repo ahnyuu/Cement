@@ -114,9 +114,9 @@ STD_COLUMNS_BY_POSITION = [
     "dosing_BE_energy",
     "RP_sep_rpm", "RP_sep_fan_damper",
     "RP_sep_BF_pressure", "RP_sep_BF_damper",
-    "mill_energy",
+    "mill_energy",                             # raw MILL 166 B/E; ANN called this dosing_BE_energy
     "mill_feed_c", "mill_feed_cir",
-    "MILL_CM_MAIN", "mill_in_temp", "mill_out_temp",   # MILL_CM_MAIN: no 1st-year ANN equivalent
+    "MILL_CM_MAIN", "mill_in_temp", "mill_out_temp",   # raw MILL C/M MAIN; ANN called this mill_energy
     "mill_BE_energy",
     "mill_out_gas_temp", "mill_out_mater_temp",
     "mill_BF_pressure", "mill_BF_damper",
@@ -131,8 +131,8 @@ STD_COLUMNS_BY_POSITION = [
 TARGET_COLS = ["blaine", "residue"]
 QUALITY_MEASUREMENT_HOURS = [0, 4, 8, 12, 16, 20]
 
-# blaine_prev / residue_prev: the most recently MEASURED value of each target (not the current
-# row's value). Computed in build_dataset.py by shifting(1) among scheduled measurement rows only,
+# blaine_prev / residue_prev: the preceding SCHEDULED measured value (not necessarily the most
+# recent actual measurement). Computed by shifting(1) among scheduled measurement rows only,
 # so it stays SPARSE (NaN everywhere except at measurement events). Passed as a KNOWN-FUTURE
 # covariate for both target models (matches the reference notebook's variables_blaine /
 # variables_residue, which both include Blaine_prev AND Residue_prev).
@@ -161,7 +161,7 @@ MONITOR_COLS = [
     "RP_BE_energy1", "RP_BE_energy2",
     "RP_sep_BF_pressure",
     "mill_energy", "mill_feed_c", "mill_feed_cir",
-    "MILL_CM_MAIN",           # no 1st-year ANN equivalent
+    "MILL_CM_MAIN",           # raw MILL C/M MAIN, corresponding to ANN's mill_energy signal
     "mill_in_temp", "mill_out_temp", "mill_BE_energy",
     "mill_out_gas_temp", "mill_out_mater_temp",
     "mill_BF_pressure",

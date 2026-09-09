@@ -1,8 +1,15 @@
 # Cement Quality Net (Chronos-2) — `_fin`
 
+
+> **2026-09-09 검증·평가 수정본:** 실행 전 [RESEARCH_PROTOCOL.md](RESEARCH_PROTOCOL.md)를 읽어 주세요.
+> 새 학습은 여러 날짜의 정답으로 검증하며, 실험 실행기는 validation 구간만 평가합니다.
+> 새 모델은 `checkpoints/review_v2/`, 새 평가 결과는 `eval/review_v2/validation/`에 저장됩니다.
+> 아래 기존 결과 표·실험 로그·노트북은 과거 test 기반 탐색 기록이며 수정 후 결과가 아닙니다.
+> 코드 변경만으로 과거 test 구간이 미사용 데이터가 되지는 않습니다.
+
 Cleaned-up rebuild of `Cement_code/chronos_quality/`. Fine-tunes **Chronos-2** as a per-target
-quality net (blaine, residue) for the cement grinding process, evaluated the same way as the
-1st-year ANN so results stay comparable.
+quality net (blaine, residue) for the cement grinding process. Evaluation reports Chronos-2
+and a last-observation baseline; it does not perform a matched ANN comparison.
 
 Only the canonical pipeline is kept here. The old folder's A/B experiment machinery (statistical
 IQR removal, damper clip-vs-NaN, ProdType drop-vs-mask, prev-quality sparse-vs-ffill, dozens of
