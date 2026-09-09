@@ -1,4 +1,7 @@
 """
+REVISED 2026-09-09: validation-only study; outputs under review_v2.
+The original study description below is retained as historical context.
+
 IQR outlier-removal A/B -- train 4 models, backtest each on BOTH test sets (8 backtests).
 
 Reproduces Cement_code/chronos_quality/train/run_iqr_experiment.sh on the measured-actual data,
@@ -31,12 +34,15 @@ from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from data.research_protocol import checkpoint_complete, evaluation_complete
+
 PY = sys.executable
-LOG = ROOT / "experiments" / "iqr" / "iqr_experiment.log"
+LOG = ROOT / "experiments" / "iqr" / "iqr_experiment_review_v2.log"
 
 CTX = {"blaine": 512, "residue": 256}
-WITHOUT_CSV = "data/processed/without_iqr/quality_timeseries.csv"
-WITH_CSV = "data/processed/with_iqr/quality_timeseries.csv"
+WITHOUT_CSV = "data/processed/review_v2/without_iqr/quality_timeseries.csv"
+WITH_CSV = "data/processed/review_v2/with_iqr/quality_timeseries.csv"
 TRAIN_CSV = {"withiqr": WITH_CSV, "withoutiqr": WITHOUT_CSV}
 EVAL_CSV = {"raw": WITHOUT_CSV, "clean": WITH_CSV}
 
@@ -67,6 +73,7 @@ def run(cmd: list[str], env_csv: str, phase: str) -> None:
 
 
 def main() -> None:
+    print("review_v2: parameter selection uses VALIDATION; historical outputs are not reused.")
     for name, rel in [("with_iqr", WITH_CSV), ("without_iqr", WITHOUT_CSV)]:
         if not (ROOT / rel).exists():
             raise SystemExit(f"missing {rel} -- run experiments/iqr/build_variants.py first")
@@ -75,8 +82,8 @@ def main() -> None:
     for target, ctx in CTX.items():
         for trainvar in ("withiqr", "withoutiqr"):
             tag = f"ctx{ctx}_{trainvar}"
-            ckpt = ROOT / "checkpoints" / f"{target}_{tag}" / "final"
-            if (ckpt / "config.json").exists():
+            ckpt = ROOT / "checkpoints" / "review_v2" / f"{target}_{tag}" / "final"
+            if checkpoint_complete(ckpt):
                 log(f"SKIP  finetune {target} {trainvar} (checkpoint exists)")
             else:
                 run([PY, "train/finetune_chronos2.py", "--target", target,
@@ -85,12 +92,12 @@ def main() -> None:
                      "--num-steps", "1000", "--batch-size", "64", "--output-tag", tag],
                     TRAIN_CSV[trainvar], f"finetune {target} {trainvar} ctx{ctx}")
 
-            for evalvar in ("raw", "clean"):
-                csv = ROOT / "eval" / f"backtest_{target}_ctx{ctx}_{trainvar}_evalon_{evalvar}.csv"
-                if csv.exists():
+            for evalvar in ("raw",):  # same unfiltered validation inputs and labels for both models
+                csv = ROOT / "eval" / "review_v2" / "validation" / f"backtest_{target}_ctx{ctx}_{trainvar}_evalon_{evalvar}.csv"
+                if evaluation_complete(csv):
                     log(f"SKIP  backtest {target} {trainvar} evalon_{evalvar} (csv exists)")
                     continue
-                run([PY, "eval/backtest.py", "--target", target, "--checkpoint", str(ckpt),
+                run([PY, "eval/backtest.py", "--split", "validation", "--target", target, "--checkpoint", str(ckpt),
                      "--context-length", str(ctx), "--stride", "4",
                      "--tag", f"ctx{ctx}_{trainvar}_evalon_{evalvar}"],
                     EVAL_CSV[evalvar], f"backtest {target} {trainvar} evalon_{evalvar}")
