@@ -129,24 +129,36 @@ def raw_feature_cols() -> list[str]:
 
 
 def remove_iqr_outliers(df: pd.DataFrame, cols: list[str], k: float = cfg.IQR_OUTLIER_K):
-    """Per item_id, per column: values outside [Q1 - k*IQR, Q3 + k*IQR] -> NaN.
+    """Fit station/column fences on TRAIN hourly rows only, then mask outliers.
 
-    Statistical complement to clean()'s fixed physical thresholds. NOT part of the canonical
-    pipeline -- only experiments/iqr/ calls this (via build(remove_iqr=True)), to A/B whether
-    statistical outlier removal helps on the measured-actual data. Columns with IQR == 0
-    (near-constant series) are left untouched. Returns (df, {col: n_values_removed}).
+    Input must be the complete hourly grid used by chronological_split. Feature fences
+    apply to all periods; quality targets are masked only in training. Validation/test
+    quality labels are retained. Canonical build(remove_iqr=False) does not call this.
     """
+    from data.dataset_utils import chronological_split
+    from data.research_protocol import validate_hourly_frame
+
+    validate_hourly_frame(df)
+    if k <= 0:
+        raise ValueError("IQR multiplier must be positive.")
     df = df.copy()
-    grouped = df.groupby("item_id")
-    removed = {}
-    for col in cols:
-        q1 = grouped[col].transform(lambda s: s.quantile(0.25))
-        q3 = grouped[col].transform(lambda s: s.quantile(0.75))
-        iqr = q3 - q1
-        lo, hi = q1 - k * iqr, q3 + k * iqr
-        outlier = (((df[col] < lo) | (df[col] > hi)) & (iqr > 0)).fillna(False)
-        removed[col] = int(outlier.sum())
-        df.loc[outlier, col] = np.nan
+    train, _, _ = chronological_split(df)
+    removed = {col: 0 for col in cols}
+    fences = []
+    for item, tg in train.groupby("item_id", sort=False):
+        item_mask = df.item_id == item
+        training_mask = item_mask & (df.timestamp <= tg.timestamp.max())
+        for col in cols:
+            q1, q3 = tg[col].quantile([0.25, 0.75])
+            iqr = q3 - q1
+            lo, hi = q1 - k * iqr, q3 + k * iqr
+            applies_to = training_mask if col in cfg.TARGET_COLS else item_mask
+            outlier = (applies_to & ((df[col] < lo) | (df[col] > hi)) & (iqr > 0)).fillna(False)
+            removed[col] += int(outlier.sum())
+            df.loc[outlier, col] = np.nan
+            fences.append({"item_id": item, "column": col, "train_end": str(tg.timestamp.max()),
+                           "lower": float(lo), "upper": float(hi), "iqr": float(iqr)})
+    df.attrs["iqr_fences"] = fences
     return df, removed
 
 
@@ -178,8 +190,8 @@ def build(*, remove_iqr: bool = False, prev_density: str = "sparse") -> pd.DataF
     """Canonical build. Both knobs default to the canonical behavior -- the canonical CSV gets
     no statistical outlier removal and keeps the prev covariates sparse.
 
-    remove_iqr=True  -- experiments/iqr/ A/B; IQR step slots in right after clean()/numeric
-                        coercion and before the prev covariates.
+    remove_iqr=True  -- experiments/iqr/ A/B; fences fit only on training hourly rows,
+                        held-out target labels are retained, then prev is recomputed.
     prev_density     -- "sparse" (default): blaine_prev/residue_prev present only at scheduled
                         measurement rows. "ffill": after the hourly reindex, forward-fill each
                         *_prev per item_id so every row carries the most recent lab reading as an
@@ -200,11 +212,6 @@ def build(*, remove_iqr: bool = False, prev_density: str = "sparse") -> pd.DataF
     for col in feature_cols + cfg.TARGET_COLS:
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
-    if remove_iqr:
-        df, removed = remove_iqr_outliers(df, iqr_cols())
-        top = sorted(removed.items(), key=lambda kv: -kv[1])[:10]
-        print(f"IQR removal: {sum(removed.values())} values -> NaN. Top: {top}")
-
     df = add_prev_quality_covariates(df)
 
     keep_cols = ["item_id", "timestamp"] + feature_cols + cfg.PREV_QUALITY_COLS + cfg.TARGET_COLS
@@ -224,6 +231,14 @@ def build(*, remove_iqr: bool = False, prev_density: str = "sparse") -> pd.DataF
         g.index.name = "timestamp"
         reindexed.append(g.reset_index())
     df = pd.concat(reindexed, ignore_index=True)
+
+    if remove_iqr:
+        df, removed = remove_iqr_outliers(df, iqr_cols())
+        fences = df.attrs["iqr_fences"]
+        df = add_prev_quality_covariates(df)
+        df.attrs["iqr_fences"] = fences
+        top = sorted(removed.items(), key=lambda kv: -kv[1])[:10]
+        print(f"TRAIN-fitted IQR removal: {sum(removed.values())} values -> NaN. Top: {top}")
 
     if prev_density == "ffill":
         df[cfg.PREV_QUALITY_COLS] = df.groupby("item_id", sort=False)[cfg.PREV_QUALITY_COLS].ffill()
